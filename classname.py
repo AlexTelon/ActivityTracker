@@ -1,3 +1,4 @@
+import csv
 import re
 import time
 import win32gui
@@ -20,27 +21,30 @@ def find_window_name(class_name, title):
             return win_name
     return None
 
-while True:
+with open('time_tracking_data.csv', 'w', newline='') as csvfile:
+    fieldnames = ['timestamp', 'window_name']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
 
-    # Get the active window
-    hwnd = win32gui.GetForegroundWindow()
+    while True:
+        # Get the active window
+        hwnd = win32gui.GetForegroundWindow()
 
-    # Check if the window is visible
-    if not win32gui.IsWindowVisible(hwnd):
-        print("Window is not visible")
-    else:
-        # Get the class name and title of the window
-        class_name = win32gui.GetClassName(hwnd)
-        title = win32gui.GetWindowText(hwnd)
-        
-        # Find the window name based on the class name and title
-        window_name = find_window_name(class_name, title)
-        
-        # Print the window name, or "other" if no matching pattern is found
-        if window_name:
-            print(f"Active Window: {window_name}")
+        # Check if the window is visible
+        if not win32gui.IsWindowVisible(hwnd):
+            print("Window is not visible")
         else:
-            print(f"Active Window: other ({title=}, {class_name=})")
+            # Get the class name and title of the window
+            class_name = win32gui.GetClassName(hwnd)
+            title = win32gui.GetWindowText(hwnd)
+            
+            # Find the window name based on the class name and title
+            window_name = find_window_name(class_name, title)
+            
+            # Write the window name and current timestamp to the CSV file
+            timestamp = int(time.time())
+            writer.writerow({'timestamp': timestamp, 'window_name': window_name or 'other'})
+            csvfile.flush()
 
-    # Poll every x seconds
-    time.sleep(1)
+        # Poll every x seconds
+        time.sleep(1)
