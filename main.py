@@ -1,48 +1,50 @@
-import time
 import csv
-import datetime
 import re
+import time
 import win32gui
-import configparser
+import patterns
 
-def get_active_window_title_windows(patterns):
-    hwnd = win32gui.GetForegroundWindow()
-    window_title = win32gui.GetWindowText(hwnd)
-    title = ' '.join(window_title.strip().split())
-    print(title)
-    # Match window title against predefined patterns
-    for app, pattern in patterns.items():
-        if re.match(pattern, title):
-            return app
+def match_pattern(class_name, title, pattern_class, pattern_title):
+    if not pattern_class and not pattern_title:
+        return False
+    if pattern_class and not re.search(pattern_class, class_name):
+        return False
+    if pattern_title and not re.search(pattern_title, title):
+        return False
+    return True
 
-    # If no match is found, return 'Other'
-    return "Other"
+def find_window_name(class_name, title):
+    for win_name, win_pattern in patterns.patterns.items():
+        pattern_class = win_pattern.get("class")
+        pattern_title = win_pattern.get("title")
+        if match_pattern(class_name, title, pattern_class, pattern_title):
+            return win_name
+    return None
 
-# Read patterns from a config file
-config = configparser.ConfigParser()
-config.read("patterns.ini")
-patterns = dict(config["patterns"])
+with open('time_tracking_data.csv', 'w', newline='') as csvfile:
+    fieldnames = ['timestamp', 'window_name']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
 
-# Initialize variables
-current_app = ""
-data_file = "time_tracking_data.csv"
+    while True:
+        # Get the active window
+        hwnd = win32gui.GetForegroundWindow()
 
-while True:
-    # Get the current active window's title
-    window_title = get_active_window_title_windows(patterns)
-    print(window_title)
-    # Check if the application has changed
-    if window_title != current_app:
-        # Record the timestamp and application
-        timestamp = datetime.datetime.now()
+        # Check if the window is visible
+        if not win32gui.IsWindowVisible(hwnd):
+            print("Window is not visible")
+        else:
+            # Get the class name and title of the window
+            class_name = win32gui.GetClassName(hwnd)
+            title = win32gui.GetWindowText(hwnd)
+            
+            # Find the window name based on the class name and title
+            window_name = find_window_name(class_name, title)
+            
+            # Write the window name and current timestamp to the CSV file
+            timestamp = int(time.time())
+            writer.writerow({'timestamp': timestamp, 'window_name': window_name or 'other'})
+            csvfile.flush()
 
-        # # Save the data to the CSV file
-        # with open(data_file, "a", newline='', encoding='utf-8') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow([current_app, timestamp])
-
-        # Update the current application
-        current_app = window_title
-
-    # Poll every x seconds
-    time.sleep(1)
+        # Poll every x seconds
+        time.sleep(1)
