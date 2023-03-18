@@ -1,80 +1,100 @@
-patterns = {
-    "Firefox": {
+[
+    {
+        "name": "Firefox",
         "class": "MozillaWindowClass",
         "title": ".*Firefox$"
     },
-    "Google Chrome": {
+    {
+        "name": "Google Chrome",
         "class": "Chrome_WidgetWin_1",
         "title": ".*Google Chrome$"
     },
-    "Microsoft Edge": {
+    {
+        "name": "Microsoft Edge",
         "class": "Chrome_WidgetWin_1",
         "title": ".*Microsoft(\u200b|\\u200b)? Edge$"
     },
-    "Brave": {
+    {
+        "name": "Brave",
         "class": "Chrome_WidgetWin_1",
         "title": ".*Brave$"
     },
-    "Microsoft Teams": {
+    {
+        "name": "Microsoft Teams",
         "class": "Chrome_WidgetWin_1",
         "title": "Microsoft Teams"
     },
-    "Microsoft Visual Studio Code": {
+    {
+        "name": "Microsoft Visual Studio Code",
         "class": "Chrome_WidgetWin_1",
         "title": "Visual Studio Code"
     },
-    "Notepad": {
+    {
+        "name": "Notepad",
         "class": "Notepad",
         "title": "Notepad"
     },
-    "Paint": {
+    {
+        "name": "Paint",
         "class": "PaintApp",
         "title": "Paint"
     },
-    "Snipping Tool": {
+    {
+        "name": "Snipping Tool",
         "class": "SnippingTool"
     },
-    "Calculator": {
+    {
+        "name": "Calculator",
         "class": "CalcFrame",
         "title": "Calculator"
     },
-    "Microsoft Word": {
+    {
+        "name": "Microsoft Word",
         "class": "OpusApp",
         "title": ".*Word$"
     },
-    "Microsoft Excel": {
+    {
+        "name": "Microsoft Excel",
         "class": "XLMAIN",
         "title": ".*Excel$"
     },
-    "Microsoft PowerPoint": {
+    {
+        "name": "Microsoft PowerPoint",
         "class": "PPTFrameClass",
         "title": ".*PowerPoint$"
     },
-    "File Explorer": {
+    {
+        "name": "File Explorer",
         "class": "CabinetWClass",
         "title": ".*"
     },
-    "Outlook": {
+    {
+        "name": "Outlook",
         "class": "rctrl_renwnd32",
         "title": ".*Outlook$"
     },
-    "Discord": {
+    {
+        "name": "Discord",
         "class": "Chrome_WidgetWin_1",
         "title": ".*Discord$"
     },
-    "chatGPT": {
+    {
+        "name": "chatGPT",
         "class": "Chrome_WidgetWin_1",
-        "title": ".*(?:New chat - Detecting Explorer Windows|New chat|\\u200bDetecting Explorer Windows)$"
+        "title": "^New chat.*"
     },
-    "git bash": {
+    {
+        "name": "git bash",
         "class": "mintty",
         "title": "^MINGW64.*"
     },
-    "Windows Terminal": {
-        "class": "CASCADIA_HOSTING_WINDOW_CLASS",
+    {
+        "name": "Windows Terminal",
+        "class": "CASCADIA_HOSTING_WINDOW_CLASS"
     },
-    "Settings": {
+    {
+        "name": "Settings",
         "class": "ApplicationFrameWindow",
         "title": "Settings"
-    },
-}
+    }
+]

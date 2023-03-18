@@ -2,7 +2,7 @@ import csv
 import re
 import time
 import win32gui
-import patterns
+import json
 
 def match_pattern(class_name, title, pattern_class, pattern_title):
     if not pattern_class and not pattern_title:
@@ -14,12 +14,16 @@ def match_pattern(class_name, title, pattern_class, pattern_title):
     return True
 
 def find_window_name(class_name, title):
-    for win_name, win_pattern in patterns.patterns.items():
+    for win_pattern in patterns:
         pattern_class = win_pattern.get("class")
         pattern_title = win_pattern.get("title")
         if match_pattern(class_name, title, pattern_class, pattern_title):
-            return win_name
+            return win_pattern["name"]
     return None
+
+# Load patterns from the JSON file
+with open('patterns.json', 'r') as file:
+    patterns = json.load(file)
 
 with open('time_tracking_data.csv', 'w', newline='') as csvfile:
     fieldnames = ['timestamp', 'window_name']
@@ -43,7 +47,7 @@ with open('time_tracking_data.csv', 'w', newline='') as csvfile:
             
             # Write the window name and current timestamp to the CSV file
             timestamp = int(time.time())
-            writer.writerow({'timestamp': timestamp, 'window_name': window_name or 'other'})
+            writer.writerow({'timestamp': timestamp, 'window_name': window_name or f'other {title=} {class_name=}'})
             csvfile.flush()
 
         # Poll every x seconds
