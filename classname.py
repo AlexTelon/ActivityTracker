@@ -1,15 +1,7 @@
 import re
+import time
 import win32gui
 import patterns
-
-def enum_windows(hwnd, results):
-    if win32gui.IsWindowVisible(hwnd):
-        class_name = win32gui.GetClassName(hwnd)
-        title = win32gui.GetWindowText(hwnd)
-        results.append((hwnd, class_name, title))
-
-windows = []
-win32gui.EnumWindows(enum_windows, windows)
 
 def match_pattern(class_name, title, pattern_class, pattern_title):
     if not pattern_class and not pattern_title:
@@ -20,7 +12,6 @@ def match_pattern(class_name, title, pattern_class, pattern_title):
         return False
     return True
 
-
 def find_window_name(class_name, title):
     for win_name, win_pattern in patterns.patterns.items():
         pattern_class = win_pattern.get("class")
@@ -29,17 +20,27 @@ def find_window_name(class_name, title):
             return win_name
     return None
 
-stuff = set()
-for hwnd, class_name, title in windows:
-    for win_name, win_pattern in patterns.patterns.items():
-        pattern_class = win_pattern.get("class")
-        pattern_title = win_pattern.get("title")
-        name = find_window_name(class_name, title)
-        if name:
-            ...
-            # print(name)
-        else:
-            stuff.add(f'{title=}, {class_name=}')
+while True:
 
-for x in stuff:
-    print(x)
+    # Get the active window
+    hwnd = win32gui.GetForegroundWindow()
+
+    # Check if the window is visible
+    if not win32gui.IsWindowVisible(hwnd):
+        print("Window is not visible")
+    else:
+        # Get the class name and title of the window
+        class_name = win32gui.GetClassName(hwnd)
+        title = win32gui.GetWindowText(hwnd)
+        
+        # Find the window name based on the class name and title
+        window_name = find_window_name(class_name, title)
+        
+        # Print the window name, or "other" if no matching pattern is found
+        if window_name:
+            print(f"Active Window: {window_name}")
+        else:
+            print(f"Active Window: other ({title=}, {class_name=})")
+
+    # Poll every x seconds
+    time.sleep(1)
