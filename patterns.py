@@ -1,11 +1,11 @@
 patterns = {
     "Firefox": {
         "class": "MozillaWindowClass",
-        "title": "Firefox"
+        "title": ".*Firefox$"
     },
     "Google Chrome": {
         "class": "Chrome_WidgetWin_1",
-        "title": "Google Chrome"
+        "title": ".*Google Chrome$"
     },
     "Microsoft Edge": {
         "class": "Chrome_WidgetWin_1",
@@ -40,15 +40,15 @@ patterns = {
     },
     "Microsoft Word": {
         "class": "OpusApp",
-        "title": "Microsoft Word"
+        "title": ".*Word$"
     },
     "Microsoft Excel": {
         "class": "XLMAIN",
-        "title": "Microsoft Excel"
+        "title": ".*Excel$"
     },
     "Microsoft PowerPoint": {
         "class": "PPTFrameClass",
-        "title": "Microsoft PowerPoint"
+        "title": ".*PowerPoint$"
     },
     "File Explorer": {
         "class": "CabinetWClass",
@@ -69,5 +69,12 @@ patterns = {
     "git bash": {
         "class": "mintty",
         "title": "^MINGW64.*"
+    },
+    "Windows Terminal": {
+        "class": "CASCADIA_HOSTING_WINDOW_CLASS",
+    },
+    "Settings": {
+        "class": "ApplicationFrameWindow",
+        "title": "Settings"
     },
 }
