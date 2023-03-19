@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import datetime
 
 from database import read_data_from_date
-
 from itertools import groupby
 
 def merge_consecutive_activities(filtered_data):
@@ -16,7 +15,6 @@ def merge_consecutive_activities(filtered_data):
 
     return merged_data
 
-
 def generate_daily_schedule_chart(filtered_data, date=None):
     if date is None:
         date = datetime.date.today()
@@ -28,8 +26,8 @@ def generate_daily_schedule_chart(filtered_data, date=None):
             duration = (end_dt - start_dt).seconds / 3600
             ax.bar(date, duration, bottom=start_dt.hour + start_dt.minute / 60, width=0.8, label=window_name, alpha=0.7)
 
-
     ax.set_ylim(0, 24)
+    ax.invert_yaxis()
     ax.set_yticks(range(25))
     ax.set_yticklabels([f"{i:02d}:00" for i in range(25)])
     ax.set_ylabel("Time")
@@ -49,6 +47,7 @@ def generate_daily_schedule_chart(filtered_data, date=None):
     ax.legend(handles, labels, loc='upper right')
 
     plt.show()
+
 
 def main():
     date = datetime.date(2023, 3, 19)  # Replace with the desired date or None for the current day
