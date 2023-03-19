@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import datetime
+from itertools import groupby
 
 from database import read_data_from_date
-from itertools import groupby
 
 def plot_daily_schedule_chart(filtered_data, date=None):
     fig = generate_daily_schedule_chart(filtered_data, date)
     plt.show()
+
 
 def generate_daily_schedule_chart(filtered_data, date=None):
     if date is None:
@@ -14,15 +15,13 @@ def generate_daily_schedule_chart(filtered_data, date=None):
 
     fig, ax = plt.subplots(figsize=(10, 7))
 
-
     for _, group in groupby(filtered_data, key=lambda x: x[1]):
         group_list = list(group)
         start_dt, window_name = group_list[0]
         end_dt, _ = group_list[-1]
 
-        if window_name != "offline":
-            duration = (end_dt - start_dt).seconds / 3600
-            ax.bar(date, duration, bottom=start_dt.hour + start_dt.minute / 60, width=0.8, label=window_name, alpha=0.7)
+        duration = (end_dt - start_dt).seconds / 3600
+        ax.bar(date, duration, bottom=start_dt.hour + start_dt.minute / 60, width=0.8, label=window_name, alpha=0.7)
 
     ax.set_ylim(0, 24)
     ax.invert_yaxis()
