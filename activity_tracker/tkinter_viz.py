@@ -2,7 +2,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import *
 from tkcalendar import *
 from database import read_data_from_date
-from schedule import generate_daily_schedule_chart, merge_consecutive_activities
+from schedule import generate_daily_schedule_chart
 
 root = Tk()
 
@@ -25,11 +25,8 @@ def display_activity_data(event):
 
     data = read_data_from_date(date)
 
-    # Merge consecutive activities
-    merged_data = merge_consecutive_activities(data)
-
     # Generate the daily schedule chart
-    fig = generate_daily_schedule_chart(merged_data, date)
+    fig = generate_daily_schedule_chart(data, date)
 
     # Clear the previous plot, if any
     if plot_widget is not None:
