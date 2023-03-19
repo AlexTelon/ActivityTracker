@@ -1,5 +1,6 @@
 import sqlite3
 import time
+import datetime
 
 class Database:
     def __init__(self, db_name):
@@ -20,3 +21,20 @@ class Database:
 
     def close(self):
         self.conn.close()
+
+
+def read_all():
+    with sqlite3.connect('time_tracking_data.sqlite') as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT timestamp, window_name FROM window_data")
+        data = cursor.fetchall()
+    return data
+
+
+def read_data_from_date(date):
+    filtered_data = []
+    for timestamp, window_name in read_all():
+        dt = datetime.datetime.fromtimestamp(timestamp)
+        if date == dt.date():
+            filtered_data.append((dt, window_name))
+    return filtered_data
