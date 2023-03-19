@@ -1,6 +1,8 @@
+from collections import defaultdict
 import sqlite3
 import time
-import datetime
+from datetime import datetime
+from typing import Tuple
 
 class Database:
     def __init__(self, db_name):
@@ -34,7 +36,18 @@ def read_all():
 def read_data_from_date(date):
     filtered_data = []
     for timestamp, window_name in read_all():
-        dt = datetime.datetime.fromtimestamp(timestamp)
+        dt = datetime.fromtimestamp(timestamp)
         if date == dt.date():
             filtered_data.append((dt, window_name))
     return filtered_data
+
+def read_data_from_dates(begin: datetime, end: datetime) -> dict[datetime, list[Tuple[datetime, str]]]:
+    """Returns a dictionary where the keys are dates with data and a list of the data from that day.
+    Dates are inclusive.
+    """
+    result = defaultdict(list)
+    for timestamp, window_name in read_all():
+        dt = datetime.fromtimestamp(timestamp)
+        if begin <= dt <= end:
+            result[dt.date()].append((dt, window_name))
+    return result
