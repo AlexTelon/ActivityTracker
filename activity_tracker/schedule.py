@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import datetime
 from itertools import groupby
+import matplotlib.cm as cm
 
 from database import read_data_from_date
 
@@ -8,20 +9,37 @@ def plot_daily_schedule_chart(filtered_data, date=None):
     fig = generate_daily_schedule_chart(filtered_data, date)
     plt.show()
 
-
 def generate_daily_schedule_chart(filtered_data, date=None):
     if date is None:
         date = datetime.date.today()
 
+    # Create a dictionary of activity names and corresponding colors
+    activity_colors = {
+        'offline': 'lightgrey',
+        'idle': 'darkgrey'
+    }
+
+    activity_names = sorted(list(set([x[1] for x in filtered_data if x[1] not in activity_colors])))
+    num_activities = len(activity_names)
+    color_map = cm.get_cmap('Set3', num_activities)
+    for activity_idx, activity_name in enumerate(activity_names):
+        activity_colors[activity_name] = color_map(activity_idx)
+
     fig, ax = plt.subplots(figsize=(10, 7))
 
-    for _, group in groupby(filtered_data, key=lambda x: x[1]):
-        group_list = list(group)
-        start_dt, window_name = group_list[0]
-        end_dt, _ = group_list[-1]
+    for activity_name, activity_group in groupby(filtered_data, key=lambda x: x[1]):
+        activity_list = list(activity_group)
+        start_dt, _ = activity_list[0]
+        end_dt, _ = activity_list[-1]
 
+        # Calculate the duration of the activity in hours
         duration = (end_dt - start_dt).seconds / 3600
-        ax.bar(date, duration, bottom=start_dt.hour + start_dt.minute / 60, width=0.8, label=window_name, alpha=0.7)
+
+        # Get the color for the activity
+        color = activity_colors.get(activity_name, 'black')
+
+        # Plot a bar for the activity
+        ax.bar(date, duration, bottom=start_dt.hour + start_dt.minute / 60, width=0.8, color=color, label=activity_name, alpha=0.7)
 
     ax.set_ylim(0, 24)
     ax.invert_yaxis()
@@ -44,6 +62,7 @@ def generate_daily_schedule_chart(filtered_data, date=None):
     ax.legend(handles, labels, loc='upper right')
 
     return fig
+
 
 
 def main():
