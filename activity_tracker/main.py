@@ -3,7 +3,7 @@ import win32gui
 import json
 import sqlite3
 import signal
-from window_utils import find_window_name
+from .window_utils import find_window_name
 import win32api
 
 IDLE_THRESHOLD = 60  # Time in seconds
