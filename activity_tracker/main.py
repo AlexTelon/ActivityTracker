@@ -15,8 +15,7 @@ def get_idle_time():
     return (current_time - last_input) / 1000  # Convert milliseconds to seconds
 
 def exit_handler(signal, frame):
-    timestamp = int(time.time())
-    db.add_row(timestamp, "offline")
+    db.add_row("offline")
     db.close()
     exit(0)
 
@@ -27,8 +26,7 @@ with open('patterns.json', 'r') as file:
     patterns = json.load(file)
 
 db = Database('time_tracking_data.sqlite')
-timestamp = int(time.time())
-db.add_row(timestamp, "offline")
+db.add_row("offline")
 
 while True:
     idle_time = get_idle_time()
@@ -46,6 +44,6 @@ while True:
         print('No match for window: %s - %s' % (class_name, title))
 
     timestamp = int(time.time())
-    db.add_row(timestamp, window_name or 'other')
+    db.add_row(window_name or 'other')
 
     time.sleep(10)

@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 class Database:
     def __init__(self, db_name):
@@ -11,7 +12,8 @@ class Database:
                                 (timestamp INTEGER, window_name TEXT)''')
         self.conn.commit()
 
-    def add_row(self, timestamp, window_name):
+    def add_row(self, window_name):
+        timestamp = int(time.time())
         print(f"writing '{window_name}' to db")
         self.cursor.execute("INSERT INTO window_data (timestamp, window_name) VALUES (?, ?)", (timestamp, window_name))
         self.conn.commit()
