@@ -1,23 +1,13 @@
-import sqlite3
+from collections import Counter
 import matplotlib.pyplot as plt
 
-def read_data_from_db():
-    with sqlite3.connect('time_tracking_data.sqlite') as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT timestamp, window_name FROM window_data")
-        data = cursor.fetchall()
-    return data
+import database
 
 def calculate_usage_percentages(data):
+    data = [name for _, name in data if name != 'idle']
     total_count = len(data)
-    usage = {}
-    
-    for _, window_name in data:
-        if window_name in usage:
-            usage[window_name] += 1
-        else:
-            usage[window_name] = 1
-    
+    usage = Counter(data)
+
     percentages = {name: (count / total_count) * 100 for name, count in usage.items()}
     return percentages
 
@@ -32,6 +22,6 @@ def display_pie_chart(percentages):
     plt.show()
 
 if __name__ == "__main__":
-    data = read_data_from_db()
+    data = database.read_all()
     percentages = calculate_usage_percentages(data)
     display_pie_chart(percentages)
