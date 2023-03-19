@@ -1,2 +1,8 @@
+# For gathering the data.
 pywin32
 psutil
+
+# For visualizing the data.
+matplotlib
+tkinter
+tkcalendar

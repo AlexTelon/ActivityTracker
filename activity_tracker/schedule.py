@@ -15,6 +15,10 @@ def merge_consecutive_activities(filtered_data):
 
     return merged_data
 
+def plot_daily_schedule_chart(filtered_data, date=None):
+    fig = generate_daily_schedule_chart(filtered_data, date)
+    plt.show()
+
 def generate_daily_schedule_chart(filtered_data, date=None):
     if date is None:
         date = datetime.date.today()
@@ -46,14 +50,14 @@ def generate_daily_schedule_chart(filtered_data, date=None):
             labels.append(label)
     ax.legend(handles, labels, loc='upper right')
 
-    plt.show()
+    return fig
 
 
 def main():
     date = datetime.date(2023, 3, 19)  # Replace with the desired date or None for the current day
     filtered_data = read_data_from_date(date)
     merged_data = merge_consecutive_activities(filtered_data)
-    generate_daily_schedule_chart(merged_data, date)
+    plot_daily_schedule_chart(merged_data, date)
 
 if __name__ == "__main__":
     main()

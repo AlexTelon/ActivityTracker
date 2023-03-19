@@ -1,7 +1,7 @@
 from collections import defaultdict
 import sqlite3
 import time
-from datetime import datetime
+from datetime import datetime, time as dt_time
 from typing import Tuple
 
 class Database:
@@ -45,6 +45,9 @@ def read_data_from_dates(begin: datetime, end: datetime) -> dict[datetime, list[
     """Returns a dictionary where the keys are dates with data and a list of the data from that day.
     Dates are inclusive.
     """
+    # TODO fix ugly import dt_time and datetime and time overall.
+    begin = datetime.combine(begin, dt_time.min)
+    end = datetime.combine(end, dt_time.max)
     result = defaultdict(list)
     for timestamp, window_name in read_all():
         dt = datetime.fromtimestamp(timestamp)
