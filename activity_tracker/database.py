@@ -54,3 +54,15 @@ def read_data_from_dates(begin: datetime, end: datetime) -> dict[datetime, list[
         if begin <= dt <= end:
             result[dt.date()].append((dt, window_name))
     return result
+
+def print_database_contents():
+    with sqlite3.connect('time_tracking_data.sqlite') as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM window_data")
+        data = cursor.fetchall()
+        for row in data:
+            print(row)
+
+
+if __name__ == "__main__":
+    print_database_contents()
