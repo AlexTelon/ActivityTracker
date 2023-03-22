@@ -2,7 +2,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from tkinter import *
 from tkcalendar import *
 from database import read_data_from_date
-from schedule import generate_daily_schedule_chart
+from daily_view import generate_daily_schedule_chart
 
 root = Tk()
 
