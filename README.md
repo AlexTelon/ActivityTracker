@@ -9,6 +9,15 @@ I basically ran a modified main that looked at the current window every second o
 
 Then there are some tools to visualise the data. But with chatGPT it should be easy to generate your own if I never get around to improve these myself.
 
+These two visualisation tools are currently available:
+
+ * `activity_tracker/calendar_view.py`
+   * You select a day on a calendar and get a plot for what during that day at what time
+ * `activity_tracker/piechart.py`
+   * Produces a piechart of the total time spent across all data.
+
+You can also just run `python activity_tracker/database.py` to get a line-by-line view of the data stored in the db.
+
 ## Setup
 
 ```bash
