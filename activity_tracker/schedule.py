@@ -13,7 +13,6 @@ def generate_daily_schedule_chart(filtered_data, date=None):
     if date is None:
         date = datetime.date.today()
 
-    # Create a dictionary of activity names and corresponding colors
     activity_colors = {
         'offline': 'lightgrey',
         'idle': 'darkgrey'
@@ -32,19 +31,16 @@ def generate_daily_schedule_chart(filtered_data, date=None):
         start_dt, _ = activity_list[0]
         end_dt, _ = activity_list[-1]
 
-        # Calculate the duration of the activity in hours
         duration = (end_dt - start_dt).seconds / 3600
-
-        # Get the color for the activity
         color = activity_colors.get(activity_name, 'black')
 
-        # Plot a bar for the activity
         ax.bar(date, duration, bottom=start_dt.hour + start_dt.minute / 60, width=0.8, color=color, label=activity_name, alpha=0.7)
 
-    ax.set_ylim(0, 24)
+    # Set the y-axis limits to display only the 06:00 - 24:00 range
+    ax.set_ylim(6, 24)
     ax.invert_yaxis()
-    ax.set_yticks(range(25))
-    ax.set_yticklabels([f"{i:02d}:00" for i in range(25)])
+    ax.set_yticks(range(6, 25))
+    ax.set_yticklabels([f"{i:02d}:00" for i in range(6, 25)])
     ax.set_ylabel("Time")
     ax.set_title(f"Daily Tool Usage Schedule ({date.strftime('%Y-%m-%d')})")
 
