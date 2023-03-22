@@ -96,5 +96,9 @@
         "name": "Settings",
         "class": "ApplicationFrameWindow",
         "title": "Settings"
+    },
+    {
+        "name": "Android Studio",
+        "class": "SunAwtFrame"
     }
 ]
