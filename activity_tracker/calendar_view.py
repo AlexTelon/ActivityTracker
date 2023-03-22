@@ -44,7 +44,14 @@ def display_activity_data(event):
     toolbar.update()
     toolbar.grid(row=1, column=1, padx=10, pady=10, sticky=E)
 
+def close_app():
+    root.quit()
+    root.destroy()
+
 # Bind the display_activity_data function to the <<CalendarSelected>> event
 cal.bind("<<CalendarSelected>>", display_activity_data)
+
+# Bind the close_app function to the window's close button
+root.protocol("WM_DELETE_WINDOW", close_app)
 
 root.mainloop()
