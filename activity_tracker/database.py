@@ -1,4 +1,5 @@
 from collections import defaultdict
+import logging
 import sqlite3
 import time
 from datetime import datetime, time as dt_time
@@ -17,7 +18,7 @@ class Database:
 
     def add_row(self, window_name):
         timestamp = int(time.time())
-        print(f"writing '{window_name}' to db")
+        logging.debug(f"writing '{window_name}' to db")
         self.cursor.execute("INSERT INTO window_data (timestamp, window_name) VALUES (?, ?)", (timestamp, window_name))
         self.conn.commit()
 

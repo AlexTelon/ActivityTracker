@@ -1,4 +1,5 @@
 import argparse
+import logging
 import time
 import win32gui
 import json
@@ -25,7 +26,15 @@ signal.signal(signal.SIGTERM, exit_handler)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('db', help='Path to the sqlite database', default='time_tracking_data.sqlite')
+parser.add_argument('--verbose', action='store_true', help='Enable verbose logging.')
 args = parser.parse_args()
+
+# Configure the logging
+if args.verbose:
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+else:
+    logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 with open('patterns.json', 'r') as file:
     patterns = json.load(file)
@@ -46,7 +55,7 @@ while True:
             window_name = find_window_name(class_name, title, patterns)
 
     if not window_name:
-        print('No match for window: %s - %s' % (class_name, title))
+        logging.debug('No match for window: %s - %s' % (class_name, title))
 
     timestamp = int(time.time())
     db.add_row(window_name or 'other')
