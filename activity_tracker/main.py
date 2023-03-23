@@ -1,3 +1,4 @@
+import argparse
 import time
 import win32gui
 import json
@@ -22,10 +23,14 @@ def exit_handler(signal, frame):
 signal.signal(signal.SIGINT, exit_handler)
 signal.signal(signal.SIGTERM, exit_handler)
 
+parser = argparse.ArgumentParser()
+parser.add_argument('db', help='Path to the sqlite database', default='time_tracking_data.sqlite')
+args = parser.parse_args()
+
 with open('patterns.json', 'r') as file:
     patterns = json.load(file)
 
-db = Database('time_tracking_data.sqlite')
+db = Database(args.db)
 db.add_row("offline")
 
 while True:
