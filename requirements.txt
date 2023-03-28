@@ -4,5 +4,4 @@ psutil
 
 # For visualizing the data.
 matplotlib
-tkinter
 tkcalendar
